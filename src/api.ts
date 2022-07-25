@@ -53,7 +53,7 @@ async function getRoute(startStation: Station, endStation: Station, options: get
 	return res.json();
 }
 
-async function getNotifications(): Promise<Notification[]> {
+export async function getNotifications(): Promise<Notification[]> {
     const res = await fetch("https://www.mvg.de/api/ems/tickers")
     return res.json()
 }
