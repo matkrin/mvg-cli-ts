@@ -1,13 +1,13 @@
 const API_URL = "https://www.mvg.de/api/fahrinfo/";
 
-async function getStation(stationSearch: string): Promise<Station> {
+export async function getStation(stationSearch: string): Promise<Station> {
 	const query = stationSearch.replace(/ /g, "%20");
 	const res: Response = await fetch(`${API_URL}location/query?q=${query}`);
 	const obj = await res.json();
 	return obj.locations[0];
 }
 
-async function getDepartures(station: Station) {
+export async function getDepartures(station: Station): Promise<{servingLines: ServingLine[]; departures: Departure[]}> {
 	const res: Response = await fetch(`${API_URL}departure/${station.id}`);
 	return res.json();
 }
@@ -47,7 +47,6 @@ async function getRoute(startStation: Station, endStation: Station, options: get
         &transportTypeSBahn=${opts.includeSBahn}
         &transportTypeCallTaxi=${opts.includeTaxi}
     `.replace(/\s+/g, "");
-	console.log(url);
 
 	const res = await fetch(url);
 	return res.json();
@@ -159,7 +158,7 @@ interface Connection {
 	oldTarif: boolean; //false
 }
 
-interface Notification {
+export interface Notification {
     id: string
     type: string
     title: string
