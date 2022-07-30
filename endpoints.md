@@ -1,4 +1,4 @@
-## Search
+## Search Station
 
 curl "https://www.mvg.de/api/fahrinfo/location/query?q=<Search Term>"
 curl "https://www.mvg.de/api/fahrinfo/location/query?q=Garching-Forsch"
@@ -159,6 +159,46 @@ returns connectionList
       departure: 1657052820000,
       arrival: 1657054680000,
       connectionPartList: [ [Object], [Object], [Object] ],
+
+            connectionPartList: [
+              {
+                stops: [Array],
+                from: [Object],
+                to: [Object],
+                path: [Array],
+                pathDescription: [Array],
+                interchangePath: [Array],
+                departure: 1659177540000,
+                arrival: 1659178020000,
+                delay: 1,
+                arrDelay: 1,
+                cancelled: false,
+                product: "SBAHN",
+                label: "S4",
+                network: "ddb",
+                connectionPartType: "TRANSPORTATION",
+                serverId: "695905917693354617 - 1",
+                destination: "Trudering",
+                lineDirection: "FORWARD",
+                sev: false,
+                zoomNoticeDeparture: false,
+                zoomNoticeArrival: false,
+                zoomNoticeDepartureEscalator: false,
+                zoomNoticeArrivalEscalator: false,
+                zoomNoticeDepartureElevator: false,
+                zoomNoticeArrivalElevator: false,
+                departurePlatform: "1",
+                departureStopPositionNumber: 0,
+                arrivalPlatform: "5",
+                arrivalStopPositionNumber: 0,
+                noChangingRequired: false,
+                fromId: "de:09162:6",
+                departureId: "d606e257f20d68a313f86fe231780a49#1659177540000#de:09162:6",
+                infoMessages: [Array],
+                occupancy: "UNKNOWN"
+              }
+            ],
+
       efaTicketIds: [
         "EINE-M0",       "EINK",      "STK-E-2",   "STK-K-1",
         "STKU21-2",      "TKS-M0",    "TKG-M0",    "TKK",
