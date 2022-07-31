@@ -2,7 +2,7 @@ import { Table } from "cliffy/table/mod.ts";
 import { colors } from "cliffy/ansi/colors.ts";
 
 import { getStation, getDepartures, getNotifications, getRoutes } from "./api/mod.ts";
-import type { Notification } from "./api/mod.ts";
+import type { Notification, Connection, ConnectionPart } from "./api/mod.ts";
 
 function parseHTML(html: string) {
 	return html
@@ -27,17 +27,13 @@ function parseHTML(html: string) {
 		.replace(/<\/?a.*?>/g, "");
 }
 
-function notificationsTable(): Table {
-	return new Table()
-		.header([
-			colors.bold("LINES"),
-			colors.bold("DURATION"),
-			colors.bold("DETAILS"),
-		])
+function newTable(...columns: string[]) {
+    const columnHeadings = columns.map(c => colors.bold(c))
+    return new Table()
+		.header(columnHeadings)
 		.maxColWidth(80)
 		.border(true);
 }
-
 
 function prepareNotifications(nots: Notification[]) {
 	return nots.map((not) => {
@@ -54,12 +50,12 @@ function prepareNotifications(nots: Notification[]) {
 }
 
 async function renderNotifications(filter: string = '') {
-	const table = notificationsTable();
 	const notifications = await getNotifications();
 	let nots = prepareNotifications(notifications);
 
 	nots = filter ? nots.filter((n) => n.lines.includes(filter)) : nots;
 
+	const table = newTable("LINES", "DURATION", "DETAILS");
 	for (let n of nots) {
 		table.push([
 			n.lines.toString(),
@@ -71,24 +67,12 @@ async function renderNotifications(filter: string = '') {
 	table.render();
 }
 
-function departuresTable() {
-	return new Table()
-		.header([
-			colors.bold("DEPARTURE TIME"),
-			colors.bold("LINE"),
-			colors.bold("DESTINATION"),
-			colors.bold("DELAY"),
-			colors.bold("INFO"),
-		])
-		.maxColWidth(80)
-		.border(true);
-}
 
 async function renderDepartures(stationName: string) {
     const station = await getStation(stationName);
     const deps = await getDepartures(station);
 
-    const depTable = departuresTable();
+    const depTable = newTable("DEPARTURE TIME", "LINE", "DESTINATION", "DELAY", "INFO");
     for (let d of deps) {
         depTable.push([
             d.departureTime.toLocaleString("de-DE"),
@@ -101,30 +85,57 @@ async function renderDepartures(stationName: string) {
     depTable.render();
 }
 
-function routesTable() {
-	return new Table()
-		.header([
-			colors.bold("TIME"),
-			colors.bold("IN"),
-			colors.bold("DURATION"),
-			colors.bold("LINES"),
-			colors.bold("DELAY"),
-			colors.bold("INFO"),
-		])
-		.maxColWidth(80)
-		.border(true);
+
+async function prepareRoutes(connections: Connection[]) {
+    return connections.map(c => {
+        const fromName = c.from.name
+        const toName = c.to.name
+        const depTime = c.departure.toLocaleTimeString("de-DE", {timeStyle: 'short'})
+        const arrivalTime = c.arrival.toLocaleTimeString("de-DE", {timeStyle: 'short'})
+        const timeDelta = Math.round((c.departure.getTime() - new Date().getTime()) / 60000)
+        const duration = (c.arrival.getTime() - c.departure.getTime()) / 60000
+        const lines = new Set()
+        c.connectionPartList.map(cp => {
+            lines.add(cp.label)
+        })
+        const info = prepareInfo(c.connectionPartList)
+        return {fromName, toName, depTime, arrivalTime, timeDelta, duration, lines, info}
+    })
 }
 
-async function prepareRoutes(startStation: string, endStation: string) {
+function prepareInfo(cpList: ConnectionPart[]): string[] {
+    const info = cpList.map(cp => {
+        if (cp.notifications) {
+            return cp.notifications.map(n => `${cp.label}: ${n.title}`).join('\n')
+        }
+        return cp.infoMessages!.join('\n')
+    })
+    return info
+}
+
+async function renderRoutes(startStation: string, endStation: string) {
     const fromStation = await getStation(startStation)
     const toStation = await getStation(endStation)
     const connections = await getRoutes(fromStation, toStation)
-    console.log(connections[0].connectionPartList)
-    return connections.map(c => {
-        const duration = (c.arrival.getTime() - c.departure.getTime()) / 60000
-    })
+    const routes = await prepareRoutes(connections)
+
+    console.log(`\n  Routes for ${connections[0].from.name} - ${connections[0].to.name}`)
+
+    const rTable = newTable("TIME", "IN", "DURATION", "LINES", "DELAY" , "INFO")
+    for (let r of routes) {
+        rTable.push([
+            `${r.depTime} - ${r.arrivalTime}`,
+            r.timeDelta.toString(),
+            r.duration.toString(),
+            [...r.lines].join(', '),
+            "del",
+            [...r.info].join('\n'),
+        ]) 
+    }
+    rTable.render()
 }
 
 // renderDepartures("garching")
 // renderNotifications()
-prepareRoutes("Hauptbahnhof", "ostbahnhof")
+// prepareRoutes("Hauptbahnhof", "ostbahnhof")
+renderRoutes("hbf", "ostbahnhof")
