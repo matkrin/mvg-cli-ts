@@ -17,11 +17,11 @@
       "exclude": ["src/testdata/"]
     },
     "options": {
-      "useTabs": true,
-      "lineWidth": 79,
+      "useTabs": false,
+      "lineWidth": 80,
       "indentWidth": 4,
       "singleQuote": false,
-      "proseWrap": "preserve"
+      "proseWrap": "always"
     }
   }
 }
