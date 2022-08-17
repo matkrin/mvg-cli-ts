@@ -2,20 +2,20 @@ const API_URL = "https://www.mvg.de/api/fahrinfo/";
 
 export interface Station {
     type: "station";
-    latitude: number; //48.12805,
-    longitude: number; // 11.60365,
-    id: string; //"de:09162:5",
-    divaId: number; //5,
-    place: string; //"München",
-    name: string; //"Ostbahnhof München",
-    hasLiveData: boolean; //false,
-    hasZoomData: boolean; //true,
-    products: string[]; //[ "TRAM", "UBAHN", "SBAHN", "BAHN" ],
+    latitude: number; 
+    longitude: number; 
+    id: string; 
+    divaId: number; 
+    place: string; 
+    name: string; 
+    hasLiveData: boolean; 
+    hasZoomData: boolean; 
+    products: string[]; 
     efaLon?: 11.73145;
     efaLat?: 48.15115;
-    link: string; //"OB",
-    tariffZones: string; //"m",
-    occupancy: string; //"UNKNOWN",
+    link: string; 
+    tariffZones: string; 
+    occupancy: string; 
     lines: Lines;
 }
 
@@ -31,11 +31,11 @@ interface Lines {
 
 interface Address {
     type: "address";
-    latitude: number; //48.262668,
-    longitude: number; //11.669852,
-    place: string; //"Garching (b München)",
-    street: string; //"P+R Garching Forschungszentrum",
-    poi: boolean; //true
+    latitude: number; 
+    longitude: number; 
+    place: string; 
+    street: string; 
+    poi: boolean; 
 }
 
 export async function getStation(stationSearch: string): Promise<Station> {
