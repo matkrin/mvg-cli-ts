@@ -34,10 +34,7 @@ function parseHTML(html: string) {
 
 function newTable(...columns: string[]) {
     const columnHeadings = columns.map((c) => colors.bold(c));
-    return new Table()
-        .header(columnHeadings)
-        .maxColWidth(80)
-        .border(true);
+    return new Table().header(columnHeadings).maxColWidth(80).border(true);
 }
 
 function prepareNotifications(nots: Notification[]) {
@@ -54,20 +51,24 @@ function prepareNotifications(nots: Notification[]) {
     });
 }
 
-export async function renderNotifications(filter: string = "") {
+export async function renderNotifications(filter: string[] = []) {
     const notifications = await getNotifications();
     let nots = prepareNotifications(notifications);
 
-    nots = filter ? nots.filter((n) => n.lines.includes(filter)) : nots;
+    nots = filter.length != 0
+        ? nots.filter((n) =>
+            filter.some((f) => n.lines.includes(f.toUpperCase()))
+        )
+        : nots;
 
     const table = newTable("LINES", "DURATION", "DETAILS");
-    for (let n of nots) {
+    nots.forEach(n => {
         table.push([
             n.lines.toString(),
             n.duration,
             `${colors.bold(n.title)}\n\n${n.details}`,
         ]);
-    }
+    })
 
     table.render();
 }
@@ -123,9 +124,8 @@ async function prepareRoutes(connections: Connection[]) {
             }
         });
 
-        const delay = c.connectionPartList.filter((cp) =>
-            cp.connectionPartType != "FOOTWAY"
-        )
+        const delay = c.connectionPartList
+            .filter((cp) => cp.connectionPartType != "FOOTWAY")
             .map((cp) => {
                 if (cp.delay != undefined) {
                     return cp.delay;
