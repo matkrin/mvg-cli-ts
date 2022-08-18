@@ -1,9 +1,16 @@
 import { Command } from "cliffy/command/mod.ts";
-import { renderDepartures, renderNotifications, renderRoutes } from "./cli.ts";
+import {
+    renderDepartures,
+    renderNotifications,
+    renderRoutes,
+} from "./tables.ts";
 
 const notifications = new Command()
-    .description("Show Notifications")
-    .action(async () => await renderNotifications());
+    .description(
+        "Show notifications for specific lines or all notifications if no arguments are given.",
+    )
+    .arguments("[lines...]")
+    .action(async (_, lines) => await renderNotifications(lines));
 
 const departures = new Command()
     .description("Show Departures")
@@ -13,8 +20,9 @@ const departures = new Command()
 const routes = new Command()
     .description("Show Routes")
     .arguments("<fromStation> <toStation>")
-    .action(async (_, fromStation, toStation) =>
-        await renderRoutes(fromStation, toStation)
+    .action(
+        async (_, fromStation, toStation) =>
+            await renderRoutes(fromStation, toStation),
     );
 
 new Command()
