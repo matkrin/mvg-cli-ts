@@ -7,7 +7,7 @@ import {
     getRoutes,
     getStation,
 } from "./api/mod.ts";
-import type { Connection, ConnectionPart, Notification } from "./api/mod.ts";
+import type { Connection, ConnectionPart, Notification, GetRoutesOptions } from "./api/mod.ts";
 
 function parseHTML(html: string) {
     return html
@@ -165,10 +165,20 @@ function prepareInfo(cpList: ConnectionPart[]): string[] {
     return info.filter((i) => i != "");
 }
 
-export async function renderRoutes(startStation: string, endStation: string) {
+export async function renderRoutes(startStation: string, endStation: string, options: GetRoutesOptions ) {
+    const opts = Object.assign({
+        epochTime: new Date(),
+        arrival: false,
+        sapTicket: true,
+        includeUbahn: true,
+        includeBus: true,
+        includeTram: true,
+        includeSBahn: true,
+        includeTaxi: false,
+    }, options);
     const fromStation = await getStation(startStation);
     const toStation = await getStation(endStation);
-    const connections = await getRoutes(fromStation, toStation);
+    const connections = await getRoutes(fromStation, toStation, opts);
     const routes = await prepareRoutes(connections);
 
     console.log(

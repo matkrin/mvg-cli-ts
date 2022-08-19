@@ -86,7 +86,7 @@ interface ConnectionPartNotification {
     eventTypes: Array<any>;
 }
 
-interface getRoutesOptions {
+export interface GetRoutesOptions {
     epochTime?: Date;
     arrival?: boolean;
     sapTicket?: boolean;
@@ -100,7 +100,7 @@ interface getRoutesOptions {
 export async function getRoutes(
     startStation: Station,
     endStation: Station,
-    options?: getRoutesOptions,
+    options?: GetRoutesOptions,
 ): Promise<Connection[]> {
     const opts = Object.assign({
         epochTime: new Date(),
@@ -118,6 +118,7 @@ export async function getRoutes(
         ${API_URL}routing/?fromStation=${startStation.id}
         &toStation=${endStation.id}
         &time=${opts.epochTime!.valueOf()}
+        &arrival=${opts.arrival}
         &sapTickets=${opts.sapTicket}
         &transportTypeUnderground=${opts.includeUbahn}
         &transportTypeBus=${opts.includeBus}

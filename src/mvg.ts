@@ -20,9 +20,18 @@ const departures = new Command()
 const routes = new Command()
     .description("Show Routes")
     .arguments("<fromStation> <toStation>")
+    .option("-t, --time <time>", "Specify a time for the departure or arrival if -a")
+    .option("-a, --arrival [arrival:boolean]", "If set, --time specifies the arrival time", { default: false, depends: ["time"] })
     .action(
-        async (_, fromStation, toStation) =>
-            await renderRoutes(fromStation, toStation),
+        async ({time, arrival}, fromStation, toStation) => {
+            const newTime = new Date();
+            if (time) {
+                const [hours, minutes] = time.split(":").map(x => parseInt(x));
+                newTime.setHours(hours)
+                newTime.setMinutes(minutes)
+            }
+            await renderRoutes(fromStation, toStation, {epochTime: newTime, arrival: arrival})
+        }
     );
 
 new Command()
