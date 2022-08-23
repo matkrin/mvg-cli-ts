@@ -2,29 +2,29 @@ import { Station } from "./station.ts";
 
 const API_URL = "https://www.mvg.de/api/fahrinfo/";
 
-interface ServingLine {
-    destination: string; 
-    sev: boolean; 
-    network: string; 
-    product: string; 
-    lineNumber: string; 
-    divaId: string; 
-}
+/* interface ServingLine { */
+/*     destination: string; */
+/*     sev: boolean; */
+/*     network: string; */
+/*     product: string; */
+/*     lineNumber: string; */
+/*     divaId: string; */
+/* } */
 
-interface Departure {
-    departureTime: Date; 
-    product: string; 
-    label: string; 
-    destination: string; 
-    live: boolean; 
-    delay: number; 
-    cancelled: boolean; 
-    lineBackgroundColor: string; 
-    departureId: string; 
-    sev: boolean; 
-    platform: string; 
-    stopPositionNumber: number; 
-    infoMessages: string; 
+export interface Departure {
+    departureTime: Date;
+    product: string;
+    label: string;
+    destination: string;
+    live: boolean;
+    delay: number;
+    cancelled: boolean;
+    lineBackgroundColor: string;
+    departureId: string;
+    sev: boolean;
+    platform: string;
+    stopPositionNumber: number;
+    infoMessages: string;
 }
 
 export async function getDepartures(

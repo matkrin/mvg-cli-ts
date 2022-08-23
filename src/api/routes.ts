@@ -3,23 +3,23 @@ import { Station } from "./station.ts";
 const API_URL = "https://www.mvg.de/api/fahrinfo/";
 
 export interface Connection {
-    zoomNoticeFrom: boolean; 
-    zoomNoticeTo: boolean; 
-    zoomNoticeFromEscalator: boolean; 
-    zoomNoticeToEscalator: boolean; 
-    zoomNoticeFromElevator: boolean; 
-    zoomNoticeToElevator: boolean; 
-    from: Station; 
-    to: Station; 
-    departure: Date; 
-    arrival: Date; 
-    connectionPartList: ConnectionPart[]; 
-    efaTicketIds: string[]; 
-    serverId: number; 
-    ringFrom: number; 
-    ringTo: number; 
-    sapTicketMappingDtos: object[]; 
-    oldTarif: boolean; 
+    zoomNoticeFrom: boolean;
+    zoomNoticeTo: boolean;
+    zoomNoticeFromEscalator: boolean;
+    zoomNoticeToEscalator: boolean;
+    zoomNoticeFromElevator: boolean;
+    zoomNoticeToElevator: boolean;
+    from: Station;
+    to: Station;
+    departure: Date;
+    arrival: Date;
+    connectionPartList: ConnectionPart[];
+    efaTicketIds: string[];
+    serverId: number;
+    ringFrom: number;
+    ringTo: number;
+    sapTicketMappingDtos: object[];
+    oldTarif: boolean;
 }
 
 export interface ConnectionPart {
@@ -27,37 +27,37 @@ export interface ConnectionPart {
     from: Station;
     to: Station;
     path: LocationLongLat[];
-    pathDescription: Array<any>; 
-    interchangePath: Array<any>; 
-    departure: Date; 
-    arrival: Date; 
-    delay: number; 
-    arrDelay: number; 
-    cancelled: boolean; 
-    product: string; 
-    label: string; 
-    network: string; 
-    connectionPartType: string; 
-    serverId: string; 
-    destination: string; 
-    lineDirection: string; 
-    sev: boolean; 
-    zoomNoticeDeparture: boolean; 
-    zoomNoticeArrival: boolean; 
-    zoomNoticeDepartureEscalator: boolean; 
-    zoomNoticeArrivalEscalator: boolean; 
-    zoomNoticeDepartureElevator: boolean; 
-    zoomNoticeArrivalElevator: boolean; 
-    departurePlatform: string; 
-    departureStopPositionNumber: number; 
-    arrivalPlatform: string; 
-    arrivalStopPositionNumber: number; 
-    noChangingRequired: boolean; 
-    fromId: string; 
-    departureId: string; 
-    infoMessages?: string[]; 
+    pathDescription: Array<any>;
+    interchangePath: Array<any>;
+    departure: Date;
+    arrival: Date;
+    delay: number;
+    arrDelay: number;
+    cancelled: boolean;
+    product: string;
+    label: string;
+    network: string;
+    connectionPartType: string;
+    serverId: string;
+    destination: string;
+    lineDirection: string;
+    sev: boolean;
+    zoomNoticeDeparture: boolean;
+    zoomNoticeArrival: boolean;
+    zoomNoticeDepartureEscalator: boolean;
+    zoomNoticeArrivalEscalator: boolean;
+    zoomNoticeDepartureElevator: boolean;
+    zoomNoticeArrivalElevator: boolean;
+    departurePlatform: string;
+    departureStopPositionNumber: number;
+    arrivalPlatform: string;
+    arrivalStopPositionNumber: number;
+    noChangingRequired: boolean;
+    fromId: string;
+    departureId: string;
+    infoMessages?: string[];
     notifications?: Array<ConnectionPartNotification>;
-    occupancy: string; 
+    occupancy: string;
 }
 
 interface Stop {
@@ -75,13 +75,13 @@ interface LocationLongLat {
 }
 
 interface ConnectionPartNotification {
-    title: string; 
-    description: string; 
-    publication: Date; 
-    validFrom: Date; 
-    validTo: Date; 
-    id: string; 
-    type: string; 
+    title: string;
+    description: string;
+    publication: Date;
+    validFrom: Date;
+    validTo: Date;
+    id: string;
+    type: string;
     lines: Array<any>;
     eventTypes: Array<any>;
 }

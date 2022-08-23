@@ -39,13 +39,13 @@ function ubahnColor(uLine: string): string {
             return colors.bold.bgRgb8(` ${uLine} `, 20);
         case "U7":
             return (
-                colors.bold.bgRgb8(` ${uLine[0]} `, 22) +
-                colors.bold.rgb8(` ${uLine[1]} `, 196)
+                colors.bold.bgRgb8(` ${uLine[0]}`, 22) +
+                colors.bold.bgRgb8(`${uLine[1]} `, 124)
             );
         case "U8":
             return (
-                colors.bold.bgRgb8(` ${uLine[0]} `, 124) +
-                colors.bold.rgb8(` ${uLine[1]} `, 166)
+                colors.bold.bgRgb8(` ${uLine[0]}`, 124) +
+                colors.bold.bgRgb8(`${uLine[1]} `, 166)
             );
         default:
             return uLine;
@@ -77,10 +77,10 @@ function sbahnColor(sLine: string): string {
 
 export function lineColor(line: string): string {
     if (line.startsWith("U")) {
-        return ubahnColor(line)
+        return ubahnColor(line);
     } else if (line.startsWith("S")) {
-        return sbahnColor(line)
+        return sbahnColor(line);
     } else {
-        return line
+        return line;
     }
 }

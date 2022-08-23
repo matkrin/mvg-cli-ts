@@ -1,21 +1,69 @@
 import { Command } from "cliffy/command/mod.ts";
+import { colors } from "cliffy/ansi/colors.ts";
 import {
-    renderDepartures,
-    renderNotifications,
-    renderRoutes,
-} from "./tables.ts";
+    getDepartures,
+    getNotifications,
+    getRoutes,
+    getStation,
+} from "./api/mod.ts";
+import {
+    prepareDepartures,
+    prepareNotifications,
+    prepareRoutes,
+} from "./prep.ts";
+import { departuresTable, notificationsTable, routesTable } from "./tables.ts";
+import Spinner from "cli_spinners/mod.ts";
 
 const notifications = new Command()
     .description(
         "Show notifications for specific lines or all notifications if no arguments are given.",
     )
     .arguments("[lines...]")
-    .action(async (_, lines) => await renderNotifications(lines));
+    .option(
+        "-f, --filter <filter...>",
+        "Filter for specific lines",
+    )
+    .action(async (_, lines) => {
+        const spinner = Spinner.getInstance();
+        spinner.start("Fetching Notifications...");
+        const notifications = await getNotifications();
+        spinner.stop();
+
+        let nots;
+        if (lines) {
+            nots = prepareNotifications(notifications, lines);
+        } else {
+            nots = prepareNotifications(notifications);
+        }
+
+        if (nots.length === 0) {
+            console.log("\n  No notifications");
+        } else {
+            const nTable = await notificationsTable(nots);
+
+            console.log("\n  Notifications\n");
+            nTable.render();
+        }
+    });
 
 const departures = new Command()
     .description("Show Departures")
     .arguments("<stationName>")
-    .action(async (_, stationName) => await renderDepartures(stationName));
+    .action(async (_, stationName) => {
+        const spinner = Spinner.getInstance();
+        spinner.start("Fetching Departures...");
+
+        const station = await getStation(stationName);
+        let departures = await getDepartures(station);
+
+        spinner.stop();
+        departures = prepareDepartures(departures);
+
+        const dTable = await departuresTable(departures);
+
+        console.log(`\n  Departures for ${colors.bold(station.name)}\n`);
+        dTable.render();
+    });
 
 const routes = new Command()
     .description("Show Routes")
@@ -36,10 +84,32 @@ const routes = new Command()
             newTime.setHours(hours);
             newTime.setMinutes(minutes);
         }
-        await renderRoutes(fromStation, toStation, {
-            epochTime: newTime,
-            arrival: arrival,
-        });
+
+        const spinner = Spinner.getInstance();
+        spinner.start("Fetching Routes...");
+        const connections = await getRoutes(
+            await getStation(fromStation),
+            await getStation(toStation),
+            { epochTime: newTime, arrival: arrival },
+        );
+        const routes = await prepareRoutes(connections);
+        const rTable = await routesTable(routes);
+        spinner.setText("Success");
+        spinner.stop();
+
+        console.log(
+            `\n  Routes for ${colors.bold(routes[0].fromName)}, ${
+                colors.italic(
+                    routes[0].fromPlace,
+                )
+            } ➜ ${colors.bold(routes[0].toName)}, ${
+                colors.italic(
+                    routes[0].toPlace,
+                )
+            }
+            `,
+        );
+        rTable.render();
     });
 
 new Command()

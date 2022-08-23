@@ -1,6 +1,7 @@
 {
     "imports": {
-        "cliffy/": "https://deno.land/x/cliffy@v0.24.2/"
+        "cliffy/": "https://deno.land/x/cliffy@v0.24.2/",
+        "cli_spinners/": "https://deno.land/x/cli_spinners@v0.0.2/"
     }
 }
 
