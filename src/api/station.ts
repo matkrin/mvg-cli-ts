@@ -29,14 +29,14 @@ interface Lines {
     otherlines: string[];
 }
 
-/* interface Address { */
-/*     type: "address"; */
-/*     latitude: number;  */
-/*     longitude: number;  */
-/*     place: string;  */
-/*     street: string;  */
-/*     poi: boolean;  */
-/* } */
+interface Address {
+    type: "address";
+    latitude: number; 
+    longitude: number; 
+    place: string; 
+    street: string; 
+    poi: boolean; 
+}
 
 export async function getStation(stationSearch: string): Promise<Station> {
     const query = stationSearch.replace(/ /g, "%20");
