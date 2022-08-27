@@ -1,5 +1,5 @@
 import { Command } from "cliffy/command/mod.ts";
-import { notifications, departures, routes } from "./commands.ts"
+import { notifications, departures, routes, map } from "./commands.ts"
 
 
 new Command()
@@ -9,4 +9,5 @@ new Command()
     .command("n notifications", notifications)
     .command("d departures", departures)
     .command("r routes", routes)
+    .command("m map", map)
     .parse(Deno.args);
