@@ -2,7 +2,20 @@
 
 Command line interface for services of the Münchner Verkehrsgesellschaft.
 
-There are three subcommands:
+## Installation
+
+[Deno](https://deno.land) is required to run the program.
+Then, you can install it from the projects root directory with:
+
+```bash
+$ deno install --allow-net -n mvg src/main.ts
+```
+
+This installs the `mvg` command, as long as `~/.deno/bin` is added to your `$PATH`.
+
+## Usage
+
+To use the mvg-cli, type `mvg` followed by a subcommand:
 
 - `n` or `notifications` : Shows the notifications for the lines, provided 
     as argument(s). Given no argument, all notifications are shown. 
@@ -12,3 +25,8 @@ There are three subcommands:
     destination station. As optional argument `-t` or `--time`, the departure 
     time can be specified in the format `hh:mm`. If the `-a` or `--arrival` 
     flag is additionally set, this time specifies the arrival time instead.
+
+For help use
+```bash
+$ mvg -h
+```
