@@ -1,5 +1,6 @@
 import { Command } from "cliffy/command/mod.ts";
 import { colors } from "cliffy/ansi/colors.ts";
+import Spinner from "cli_spinners/mod.ts";
 import {
     getDepartures,
     getNotifications,
@@ -12,9 +13,8 @@ import {
     prepareRoutes,
 } from "./prep.ts";
 import { departuresTable, notificationsTable, routesTable } from "./tables.ts";
-import Spinner from "cli_spinners/mod.ts";
 
-const notifications = new Command()
+export const notifications = new Command()
     .description(
         "Show notifications for specific lines or all notifications if no arguments are given.",
     )
@@ -46,7 +46,7 @@ const notifications = new Command()
         }
     });
 
-const departures = new Command()
+export const departures = new Command()
     .description("Show Departures")
     .arguments("<stationName>")
     .action(async (_, stationName) => {
@@ -65,7 +65,7 @@ const departures = new Command()
         dTable.render();
     });
 
-const routes = new Command()
+export const routes = new Command()
     .description("Show Routes")
     .arguments("<fromStation> <toStation>")
     .option(
@@ -99,24 +99,11 @@ const routes = new Command()
 
         console.log(
             `\n  Routes for ${colors.bold(routes[0].fromName)}, ${
-                colors.italic(
-                    routes[0].fromPlace,
-                )
+                colors.italic(routes[0].fromPlace)
             } ➜ ${colors.bold(routes[0].toName)}, ${
-                colors.italic(
-                    routes[0].toPlace,
-                )
+                colors.italic(routes[0].toPlace)
             }
             `,
         );
         rTable.render();
     });
-
-new Command()
-    .name("mvg")
-    .version("0.1.0")
-    .description("Command line interface for MVG services")
-    .command("n notifications", notifications)
-    .command("d departures", departures)
-    .command("r routes", routes)
-    .parse(Deno.args);
