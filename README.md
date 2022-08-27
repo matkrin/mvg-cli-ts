@@ -13,7 +13,7 @@ $ deno install --allow-net --allow-run -n mvg src/main.ts
 
 This installs the `mvg` command, as long as `~/.deno/bin` is added to your
 `$PATH`.
-(`allow-net` is used to fetch the data, `allow-run` is used to open the maps)
+
 
 ## Usage
 
@@ -28,8 +28,8 @@ To use the mvg-cli, type `mvg` followed by a subcommand:
     time can be specified in the format `hh:mm`. If the `-a` or `--arrival` 
     flag is additionally set, this time specifies the arrival time instead.
 - `m` or `map`: By default the city map for MVG-lines gets opened in the default
-    browser. With one of the additional flags `-r`/`--region`, `-t`/`--tram` or 
-    `-n`/`--night`, those maps get opened, respectively.
+    browser. With one of the additional flags `-r` / `--region`, `-t` / `--tram`
+    or `-n` / `--night`, those maps get opened, respectively.
 
 For help use
 ```bash
