@@ -27,7 +27,7 @@ export const notifications = new Command()
         const spinner = Spinner.getInstance();
         spinner.start("Fetching Notifications...");
         const notifications = await getNotifications();
-        spinner.stop();
+        await spinner.stop();
 
         let nots;
         if (lines) {
@@ -56,7 +56,7 @@ export const departures = new Command()
         const station = await getStation(stationName);
         let departures = await getDepartures(station);
 
-        spinner.stop();
+        await spinner.stop();
         departures = prepareDepartures(departures);
 
         const dTable = await departuresTable(departures);
@@ -94,8 +94,7 @@ export const routes = new Command()
         );
         const routes = await prepareRoutes(connections);
         const rTable = await routesTable(routes);
-        spinner.setText("Success");
-        spinner.stop();
+        await spinner.stop();
 
         console.log(
             `\n  Routes for ${colors.bold(routes[0].fromName)}, ${
