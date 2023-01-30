@@ -21,7 +21,7 @@ function filterNotsForLines(nots: PreparedNotification[], filter: string[]) {
 }
 
 function colorNots(nots: PreparedNotification[]) {
-    for (let n of nots) {
+    for (const n of nots) {
         n.lines = n.lines.map((l) => lineColor(l));
     }
     return nots;
@@ -36,7 +36,10 @@ export function prepareNotifications(
         const details = parseHTML(not.htmlText);
         const title = not.title;
         const from = not.activeDuration.fromDate.toLocaleDateString("de-DE");
-        const to = not.activeDuration.toDate.toLocaleDateString("de-DE");
+        let to = ""
+        if (not.activeDuration.toDate) {
+            to = not.activeDuration.toDate.toLocaleDateString("de-DE");
+        }
         const duration = `${from} - ${to}`;
 
         return { lines, details, title, duration };
@@ -48,7 +51,7 @@ export function prepareNotifications(
 }
 
 export function prepareDepartures(departures: Departure[]) {
-    for (let d of departures) {
+    for (const d of departures) {
         d.label = lineColor(d.label);
     }
     return departures;
@@ -70,17 +73,17 @@ export interface PreparedRoute {
 
 function prepareInfo(cpList: ConnectionPart[]): string[] {
     const info = cpList.map((cp) => {
-        if (cp.notifications != undefined) {
+        if (cp.notifications !== undefined) {
             return cp.notifications.map((n) => `${cp.label}: ${n.title}`).join(
                 "\n",
             );
-        } else if (cp.infoMessages != undefined) {
+        } else if (cp.infoMessages !== undefined) {
             return cp.infoMessages!.join("\n");
         } else {
             return "";
         }
     });
-    return info.filter((i) => i != "");
+    return info.filter((i) => i !== "");
 }
 
 function prepareLines(cpList: ConnectionPart[]): string[] {
@@ -88,14 +91,14 @@ function prepareLines(cpList: ConnectionPart[]): string[] {
     cpList.forEach((cp) =>
         cp.connectionPartType === "FOOTWAY"
             ? lines.add("walk")
-            : lines.add(cp.label)
+            : lines.add(cp.label ? cp.label : "")
     );
     return [...lines].map((l) => lineColor(l));
 }
 
 function prepareDelay(cpList: ConnectionPart[]): string[] {
     return cpList.map((cp) => {
-        if (cp.delay != undefined) {
+        if (cp.delay !== undefined) {
             return cp.delay.toString();
         } else {
             return "-";
@@ -103,7 +106,7 @@ function prepareDelay(cpList: ConnectionPart[]): string[] {
     });
 }
 
-export async function prepareRoutes(connections: Connection[]) {
+export function prepareRoutes(connections: Connection[]) {
     return connections.map((c) => {
         const depTime = c.departure.toLocaleTimeString("de-DE", {
             timeStyle: "short",

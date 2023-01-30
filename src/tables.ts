@@ -8,7 +8,7 @@ function newTable(...columns: string[]) {
     return new Table().header(columnHeadings).maxColWidth(80).border(true);
 }
 
-export async function notificationsTable(
+export function notificationsTable(
     notifications: PreparedNotification[],
 ) {
     const table = newTable("LINES", "DURATION", "DETAILS");
@@ -24,7 +24,7 @@ export async function notificationsTable(
     return table;
 }
 
-export async function departuresTable(departures: Departure[]) {
+export function departuresTable(departures: Departure[]) {
     const table = newTable(
         "DEPARTURE TIME",
         "IN",
@@ -34,7 +34,7 @@ export async function departuresTable(departures: Departure[]) {
         "INFO",
     );
 
-    for (let d of departures) {
+    for (const d of departures) {
         const timeDelta = Math.round(
             (d.departureTime.getTime() - new Date().getTime()) / 60000,
         );
@@ -43,16 +43,16 @@ export async function departuresTable(departures: Departure[]) {
             timeDelta,
             d.label,
             d.destination,
-            d.delay,
+            d.delay ? d.delay : "-",
             d.infoMessages.toString(),
         ]);
     }
     return table;
 }
 
-export async function routesTable(routes: PreparedRoute[]) {
+export function routesTable(routes: PreparedRoute[]) {
     const table = newTable("TIME", "IN", "DURATION", "LINES", "DELAYS", "INFO");
-    for (let r of routes) {
+    for (const r of routes) {
         table.push([
             `${r.depTime} - ${r.arrivalTime}`,
             r.timeDelta.toString(),
