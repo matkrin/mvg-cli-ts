@@ -1,6 +1,6 @@
 const API_URL = "https://www.mvg.de/api/fahrinfo/";
 
-export interface Station {
+export type Station = {
     type: "station";
     latitude: number;
     longitude: number;
@@ -13,15 +13,15 @@ export interface Station {
     products: string[];
     efaLon?: 11.73145;
     efaLat?: 48.15115;
-    link: string;
-    tariffZones: string;
+    link?: string;
+    tariffZones?: string;
     occupancy: string;
     lines: Lines;
 }
 
-interface Lines {
+type Lines = {
     tram: string[];
-    nachttream: string[];
+    nachttram: string[];
     sbahn: string[];
     ubahn: string[];
     bus: string[];
@@ -29,7 +29,7 @@ interface Lines {
     otherlines: string[];
 }
 
-interface Address {
+type Address = {
     type: "address";
     latitude: number; 
     longitude: number; 

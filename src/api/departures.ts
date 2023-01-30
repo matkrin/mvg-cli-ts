@@ -2,7 +2,7 @@ import { Station } from "./station.ts";
 
 const API_URL = "https://www.mvg.de/api/fahrinfo/";
 
-interface ServingLine {
+type ServingLine = {
     destination: string;
     sev: boolean;
     network: string;
@@ -11,20 +11,20 @@ interface ServingLine {
     divaId: string;
 }
 
-export interface Departure {
+export type Departure = {
     departureTime: Date;
     product: string;
     label: string;
     destination: string;
     live: boolean;
-    delay: number;
+    delay?: number;
     cancelled: boolean;
     lineBackgroundColor: string;
     departureId: string;
     sev: boolean;
     platform: string;
     stopPositionNumber: number;
-    infoMessages: string;
+    infoMessages: string[];
 }
 
 export async function getDepartures(

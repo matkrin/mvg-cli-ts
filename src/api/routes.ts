@@ -2,7 +2,7 @@ import { Station } from "./station.ts";
 
 const API_URL = "https://www.mvg.de/api/fahrinfo/";
 
-export interface Connection {
+export type Connection = {
     zoomNoticeFrom: boolean;
     zoomNoticeTo: boolean;
     zoomNoticeFromEscalator: boolean;
@@ -18,29 +18,29 @@ export interface Connection {
     serverId: number;
     ringFrom: number;
     ringTo: number;
-    sapTicketMappingDtos: object[];
+    sapTicketMappingDtos?: SapTicketMappingDtos[];
     oldTarif: boolean;
-}
+};
 
-export interface ConnectionPart {
-    stops: Stop[];
+export type ConnectionPart = {
+    stops?: Stop[];
     from: Station;
     to: Station;
     path: LocationLongLat[];
-    pathDescription: Array<any>;
-    interchangePath: Array<any>;
+    pathDescription: PathDescription[];
+    interchangePath: InterchangePath[];
     departure: Date;
     arrival: Date;
-    delay: number;
-    arrDelay: number;
+    delay?: number;
+    arrDelay?: number;
     cancelled: boolean;
-    product: string;
-    label: string;
-    network: string;
+    product?: string;
+    label?: string;
+    network?: string;
     connectionPartType: string;
-    serverId: string;
-    destination: string;
-    lineDirection: string;
+    serverId?: string;
+    destination?: string;
+    lineDirection?: string;
     sev: boolean;
     zoomNoticeDeparture: boolean;
     zoomNoticeArrival: boolean;
@@ -48,33 +48,33 @@ export interface ConnectionPart {
     zoomNoticeArrivalEscalator: boolean;
     zoomNoticeDepartureElevator: boolean;
     zoomNoticeArrivalElevator: boolean;
-    departurePlatform: string;
+    departurePlatform?: string;
     departureStopPositionNumber: number;
     arrivalPlatform: string;
     arrivalStopPositionNumber: number;
     noChangingRequired: boolean;
-    fromId: string;
-    departureId: string;
+    fromId?: string;
+    departureId?: string;
     infoMessages?: string[];
     notifications?: Array<ConnectionPartNotification>;
-    occupancy: string;
+    occupancy?: string;
 }
 
-interface Stop {
+type Stop = {
     location: Station;
     time: Date;
-    delay: number;
-    arrDelay: number;
+    delay?: number;
+    arrDelay?: number;
     cancelled: boolean;
 }
 
-interface LocationLongLat {
+type LocationLongLat = {
     type: "location";
     latitude: "string";
     longitude: "string";
 }
 
-interface ConnectionPartNotification {
+type ConnectionPartNotification = {
     title: string;
     description: string;
     publication: Date;
@@ -82,11 +82,41 @@ interface ConnectionPartNotification {
     validTo: Date;
     id: string;
     type: string;
-    lines: Array<any>;
-    eventTypes: Array<any>;
+    /* lines: Array<any>; */
+    /* eventTypes: Array<any>; */
 }
 
-export interface GetRoutesOptions {
+type PathDescription = {
+    from: number;
+    to: number;
+    level: number;
+}
+
+type InterchangePath = {
+    type: "location";
+    latitude: number;
+    longitude: number;
+}
+
+type SapTicketMappingDtos = {
+    sap_id: string;
+    sap_name: string;
+    sap_price: string;
+    display_title_de: string;
+    display_title_en: string;
+    display_subtitle_de: string;
+    display_subtitle_en: string;
+    efa_id: string;
+    type_name: string;
+    available_atm: boolean;
+    available_mobile_atm: boolean;
+    available_app: boolean;
+    ticket_aggregation_group: string;
+    tarif_level: string;
+    zones: string;
+}
+
+export type GetRoutesOptions = {
     epochTime?: Date;
     arrival?: boolean;
     sapTicket?: boolean;
@@ -102,16 +132,19 @@ export async function getRoutes(
     endStation: Station,
     options?: GetRoutesOptions,
 ): Promise<Connection[]> {
-    const opts = Object.assign({
-        epochTime: new Date(),
-        arrival: false,
-        sapTicket: true,
-        includeUbahn: true,
-        includeBus: true,
-        includeTram: true,
-        includeSBahn: true,
-        includeTaxi: false,
-    }, options);
+    const opts = Object.assign(
+        {
+            epochTime: new Date(),
+            arrival: false,
+            sapTicket: true,
+            includeUbahn: true,
+            includeBus: true,
+            includeTram: true,
+            includeSBahn: true,
+            includeTaxi: false,
+        },
+        options,
+    );
 
     // MVG uses colons in the Station.id, so no URL encoding possible
     const url = `

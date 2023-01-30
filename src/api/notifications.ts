@@ -1,4 +1,4 @@
-export interface Notification {
+export type Notification = {
     id: string;
     type: string;
     title: string;
@@ -13,7 +13,7 @@ export interface Notification {
     modificationDate: Date;
 }
 
-interface NotificationLines {
+type NotificationLines = {
     id: string;
     name: string;
     typeOfTransport: string;
@@ -21,17 +21,17 @@ interface NotificationLines {
     direction: string;
 }
 
-interface NotificationStation {
+type NotificationStation = {
     id: string;
     name: string;
 }
 
-interface Duration {
+type Duration = {
     fromDate: Date;
-    toDate: Date;
+    toDate?: Date;
 }
 
-interface DownloadLink {
+type DownloadLink = {
     id: string;
     name: string;
     mimeType: string;
@@ -43,11 +43,11 @@ export async function getNotifications(): Promise<Notification[]> {
     return data.map((x: Notification) => {
         x.incidentDuration.map((y: Duration) => {
             y.fromDate = new Date(y.fromDate);
-            y.toDate = new Date(y.toDate);
+            y.toDate = new Date(y.toDate!);
             return y;
         });
         x.activeDuration.fromDate = new Date(x.activeDuration.fromDate);
-        x.activeDuration.toDate = new Date(x.activeDuration.toDate);
+        x.activeDuration.toDate = new Date(x.activeDuration.toDate!);
         x.modificationDate = new Date(x.modificationDate);
         return x;
     });
