@@ -39,7 +39,7 @@ export const notifications = new Command()
         if (nots.length === 0) {
             console.log("\n  No notifications");
         } else {
-            const nTable = await notificationsTable(nots);
+            const nTable = notificationsTable(nots);
 
             console.log("\n  Notifications\n");
             nTable.render();
@@ -59,7 +59,7 @@ export const departures = new Command()
         await spinner.stop();
         departures = prepareDepartures(departures);
 
-        const dTable = await departuresTable(departures);
+        const dTable = departuresTable(departures);
 
         console.log(`\n  Departures for ${colors.bold(station.name)}\n`);
         dTable.render();
@@ -92,8 +92,8 @@ export const routes = new Command()
             await getStation(toStation),
             { epochTime: newTime, arrival: arrival },
         );
-        const routes = await prepareRoutes(connections);
-        const rTable = await routesTable(routes);
+        const routes = prepareRoutes(connections);
+        const rTable = routesTable(routes);
         await spinner.stop();
 
         console.log(
@@ -108,17 +108,17 @@ export const routes = new Command()
     });
 
 async function showMap(link: string) {
-    const os = Deno.build.os
+    const os = Deno.build.os;
     let util;
-    if (os === 'linux') {
-        util = "xdg-open" 
-    } else if (os === 'darwin') {
-        util = "open"
+    if (os === "linux") {
+        util = "xdg-open";
+    } else if (os === "darwin") {
+        util = "open";
     } else {
-        util = "start"
+        util = "start";
     }
-    const p = Deno.run({cmd: [util, link]})
-    await p.status()
+    const p = Deno.run({ cmd: [util, link] });
+    await p.status();
 }
 
 export const map = new Command()
@@ -126,15 +126,23 @@ export const map = new Command()
     .option("-r, --region [region]", "Show the regional map")
     .option("-t, --tram [tram]", "Show the tram map")
     .option("-n, --night [night]", "Show the map for night lines")
-    .action(({region, tram, night}) => {
-        console.log(region)
+    .action(({ region, tram, night }) => {
+        console.log(region);
         if (region) {
-            showMap("https://www.mvg.de/dam/jcr:88249232-e41c-417b-b976-1945c5ade867/netz-tarifplan.pdf")
+            showMap(
+                "https://www.mvg.de/dam/jcr:88249232-e41c-417b-b976-1945c5ade867/netz-tarifplan.pdf",
+            );
         } else if (tram) {
-            showMap("https://www.mvg.de/dam/jcr:1164570c-cc5f-4b6d-a007-e99c32b00905/tramnetz.pdf")
+            showMap(
+                "https://www.mvg.de/dam/jcr:1164570c-cc5f-4b6d-a007-e99c32b00905/tramnetz.pdf",
+            );
         } else if (night) {
-            showMap("https://www.mvg.de/dam/jcr:fe99cd93-ef1c-483c-a715-f421da96382b/nachtliniennetz.pdf")
+            showMap(
+                "https://www.mvg.de/dam/jcr:fe99cd93-ef1c-483c-a715-f421da96382b/nachtliniennetz.pdf",
+            );
         } else {
-            showMap("https://www.mvg.de/dam/jcr:88249232-e41c-417b-b976-1945c5ade867/netz-tarifplan.pdf")
+            showMap(
+                "https://www.mvg.de/dam/jcr:88249232-e41c-417b-b976-1945c5ade867/netz-tarifplan.pdf",
+            );
         }
-    })
+    });
