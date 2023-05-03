@@ -17,7 +17,7 @@ export type Station = {
     tariffZones?: string;
     occupancy: string;
     lines: Lines;
-}
+};
 
 type Lines = {
     tram: string[];
@@ -27,16 +27,16 @@ type Lines = {
     bus: string[];
     nachtbus: string[];
     otherlines: string[];
-}
+};
 
 type Address = {
     type: "address";
-    latitude: number; 
-    longitude: number; 
-    place: string; 
-    street: string; 
-    poi: boolean; 
-}
+    latitude: number;
+    longitude: number;
+    place: string;
+    street: string;
+    poi: boolean;
+};
 
 export async function getStation(stationSearch: string): Promise<Station> {
     const query = stationSearch.replace(/ /g, "%20");

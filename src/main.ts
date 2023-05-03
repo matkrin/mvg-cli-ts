@@ -1,6 +1,5 @@
 import { Command } from "cliffy/command/mod.ts";
-import { notifications, departures, routes, map } from "./commands.ts"
-
+import { departures, map, notifications, routes } from "./commands.ts";
 
 new Command()
     .name("mvg")

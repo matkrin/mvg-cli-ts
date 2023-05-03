@@ -11,7 +11,7 @@ export type Notification = {
     incidentDuration: Duration[];
     activeDuration: Duration;
     modificationDate: Date;
-}
+};
 
 type NotificationLines = {
     id: string;
@@ -19,23 +19,23 @@ type NotificationLines = {
     typeOfTransport: string;
     stations: NotificationStation[];
     direction: string;
-}
+};
 
 type NotificationStation = {
     id: string;
     name: string;
-}
+};
 
 type Duration = {
     fromDate: Date;
     toDate?: Date;
-}
+};
 
 type DownloadLink = {
     id: string;
     name: string;
     mimeType: string;
-}
+};
 
 export async function getNotifications(): Promise<Notification[]> {
     const res = await fetch("https://www.mvg.de/api/ems/tickers");

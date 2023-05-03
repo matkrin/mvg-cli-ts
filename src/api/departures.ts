@@ -9,7 +9,7 @@ type ServingLine = {
     product: string;
     lineNumber: string;
     divaId: string;
-}
+};
 
 export type Departure = {
     departureTime: Date;
@@ -25,7 +25,7 @@ export type Departure = {
     platform: string;
     stopPositionNumber: number;
     infoMessages: string[];
-}
+};
 
 export async function getDepartures(
     station: Station,

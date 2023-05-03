@@ -36,7 +36,7 @@ export function prepareNotifications(
         const details = parseHTML(not.htmlText);
         const title = not.title;
         const from = not.activeDuration.fromDate.toLocaleDateString("de-DE");
-        let to = ""
+        let to = "";
         if (not.activeDuration.toDate) {
             to = not.activeDuration.toDate.toLocaleDateString("de-DE");
         }

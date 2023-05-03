@@ -43,7 +43,7 @@ export function departuresTable(departures: Departure[]) {
             timeDelta,
             d.label,
             d.destination,
-            d.delay ? d.delay : "-",
+            d.delay ? d.delay : "0",
             d.infoMessages.toString(),
         ]);
     }

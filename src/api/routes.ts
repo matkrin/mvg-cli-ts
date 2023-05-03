@@ -58,7 +58,7 @@ export type ConnectionPart = {
     infoMessages?: string[];
     notifications?: Array<ConnectionPartNotification>;
     occupancy?: string;
-}
+};
 
 type Stop = {
     location: Station;
@@ -66,13 +66,13 @@ type Stop = {
     delay?: number;
     arrDelay?: number;
     cancelled: boolean;
-}
+};
 
 type LocationLongLat = {
     type: "location";
     latitude: "string";
     longitude: "string";
-}
+};
 
 type ConnectionPartNotification = {
     title: string;
@@ -84,19 +84,19 @@ type ConnectionPartNotification = {
     type: string;
     /* lines: Array<any>; */
     /* eventTypes: Array<any>; */
-}
+};
 
 type PathDescription = {
     from: number;
     to: number;
     level: number;
-}
+};
 
 type InterchangePath = {
     type: "location";
     latitude: number;
     longitude: number;
-}
+};
 
 type SapTicketMappingDtos = {
     sap_id: string;
@@ -114,7 +114,7 @@ type SapTicketMappingDtos = {
     ticket_aggregation_group: string;
     tarif_level: string;
     zones: string;
-}
+};
 
 export type GetRoutesOptions = {
     epochTime?: Date;
@@ -125,7 +125,7 @@ export type GetRoutesOptions = {
     includeTram?: boolean;
     includeSBahn?: boolean;
     includeTaxi?: boolean;
-}
+};
 
 export async function getRoutes(
     startStation: Station,
